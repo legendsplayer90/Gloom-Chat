@@ -1,6 +1,5 @@
 // ====================================================================
 // GLOOM-CHAT: EL ANFITRIÓN DEL SERVIDOR
-// Este código maneja el servidor web y la comunicación en tiempo real.
 // ====================================================================
 
 // --- 1. PRESENTANDO LAS HERRAMIENTAS (Las Dependencias) ---
@@ -9,7 +8,9 @@ const http = require('http');               // HTTP: Necesario para que Express 
 const { Server } = require('socket.io');    // Socket.IO: Nuestro servicio de mensajería rápida (tiempo real).
 
 // --- 2. CONFIGURACIÓN DEL SALÓN DE EVENTOS ---
-const PORT = process.env.PORT;
+
+// ⚠️ CORRECCIÓN DE PUERTO PARA RENDER: Usamos SOLO la variable de entorno de Render.
+const PORT = process.env.PORT; 
 
 const app = express(); 
 const server = http.createServer(app); 
@@ -30,10 +31,13 @@ let historialDeConversacion = []; // El registro de los mensajes en la RAM.
 const LIMITE_DE_HISTORIAL = 30; 
 
 // --- 4. LA RECEPCIÓN DEL SERVIDOR (Rutas Web) ---
-app.use(express.static('public'));
+
+// Mantenemos esta línea para servir otros archivos estáticos (CSS, JS) que SÍ están en 'public'
+app.use(express.static('public')); 
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    // ⬇️ CORRECCIÓN DE RUTA: index.html ahora está en la raíz del servidor.
+    res.sendFile(__dirname + '/index.html'); 
 });
 
 // --- 5. LÓGICA DE LA FIESTA (Manejando Conexiones de Socket.IO) ---
@@ -106,5 +110,6 @@ io.on('connection', (socket) => {
 
 // --- 6. APERTURA OFICIAL DEL SALÓN ---
 server.listen(PORT, () => {
+    // Si Render no usa 10000 como valor, usamos la variable de entorno.
     console.log(`🚀 El Anfitrión ha iniciado Gloom-Chat (30 Mensajes en RAM) en el puerto ${PORT}`);
 });
