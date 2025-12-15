@@ -9,7 +9,7 @@ const http = require('http');               // HTTP: Necesario para que Express 
 const { Server } = require('socket.io');    // Socket.IO: Nuestro servicio de mensajería rápida (tiempo real).
 
 // --- 2. CONFIGURACIÓN DEL SALÓN DE EVENTOS ---
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 const app = express(); 
 const server = http.createServer(app); 
